@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <style>
+    body {
+      margin: 0;
+      background: #000;
+      color: white;
+      text-align: center;
+      font-family: sans-serif;
+    }
+    video {
+      width: 100vw;
+      height: auto;
+      max-height: 90vh;
+      object-fit: cover;
+      transform: scaleX(-1);
+      filter: brightness(1);
+    }
+    input[type="range"] {
+      width: 80%;
+      margin: 10px;
+    }
+  </style>
+</head>
+<body>
+  <video id="mirror" autoplay playsinline></video>
+  <input type="range" min="0.2" max="2" step="0.1" value="1" id="brightness">
+  <script>
+    const video = document.getElementById("mirror");
+    const brightness = document.getElementById("brightness");
+
+    navigator.mediaDevices.getUserMedia({ video: { facingMode: "user" } })
+    .then(stream => { video.srcObject = stream; })
+    .catch(e => { alert("Camera access denied: " + e.message); });
+
+    brightness.oninput = () => {
+      video.style.filter = `brightness(${brightness.value})`;
+    };
+  </script>
+</body>
+</html>
